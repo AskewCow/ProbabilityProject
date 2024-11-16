@@ -8,6 +8,12 @@ This file uses Monte Carlo simulation to produce a graph for the proportion of t
 This R script performs a Monte Carlo simulation to study the behaviour of a temperature process 𝑋(𝑡) that evolves randomly over the time interval [0,1].
 
 # Part 2 ✅
+## Instructions
+- Ensure required libraries are installed before running the script. Dependencies are commented out at top of script
+- Place the team_stats.xls file in the R project folder and from within RStudio click import dataset.
+- Clear existing plots in between simulations to avoid duplication.
+- Generating plots may take some time, especially with a large number of simulations.
+
 ## Model Description 📄
 The model we have developed is a Monte Carlo simulation that predicts the final points for each Premier League team in the 2024-2025 season. The simulation is based on the idea that the outcome of each match (win, loss, or draw) is determined by the attacking and defensive strengths of the two competing teams, combined with randomness through a Poisson distribution to model the number of goals scored.
 
