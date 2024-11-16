@@ -1,14 +1,22 @@
+# Dependencies:
+# install.packages("readxl")
+# install.packages("ggplot2")
+# install.packages("knitr")
+# install.packages("reshape2")
+
+# while (dev.cur() > 1) dev.off() (resets all the plots)
+
 # Load necessary libraries
 library(readxl)
+library(ggplot2)
+library(knitr)
+library(reshape2)
 
 # Import the dataset
 team_stats <- read_excel("team_stats.xls")
 
-# View the first few rows of the dataset (optional)
-View(team_stats)
-
 # Define the number of simulations
-simulations <- 10000
+simulations <- 100
 
 # Function to calculate points based on goals scored
 calculate_points <- function(home_goals, away_goals) {
@@ -24,10 +32,10 @@ calculate_points <- function(home_goals, away_goals) {
 # Function to simulate a match between home and away teams
 simulate_match <- function(home_team, away_team) {
   # Get the attacking and defensive strengths for both teams
-  home_attack_strength <- team_stats$Attacking Strength[team_stats$Squad == home_team]
-  away_defense_strength <- team_stats$Defensive Strength[team_stats$Squad == away_team]
-  away_attack_strength <- team_stats$Attacking Strength[team_stats$Squad == away_team]
-  home_defense_strength <- team_stats$Defensive Strength[team_stats$Squad == home_team]
+  home_attack_strength <- team_stats$`Attacking Strength`[team_stats$Squad == home_team]
+  away_defense_strength <- team_stats$`Defensive Strength`[team_stats$Squad == away_team]
+  away_attack_strength <- team_stats$`Attacking Strength`[team_stats$Squad == away_team]
+  home_defense_strength <- team_stats$`Defensive Strength`[team_stats$Squad == home_team]
   
   # Calculate expected goals for both teams
   home_xG <- home_attack_strength * away_defense_strength
@@ -84,8 +92,6 @@ message("Simulation Completed Successfully!")
 
 # - - - - - - - - - - -
 
-# Load necessary libraries for plotting
-library(ggplot2)
 
 # Create a bar plot for final team points
 ggplot(data.frame(Team = names(team_points), Points = team_points), aes(x = reorder(Team, -Points), y = Points)) +
@@ -110,9 +116,6 @@ ggplot(points_data, aes(x = Points)) +
   labs(title = "Distribution of Simulated Points for Each Team", x = "Points", y = "Density")
 
 
-
-# Create a summary table of final team points
-library(knitr)
 
 # Convert the team_points into a data frame
 team_points_df <- data.frame(Team = names(team_points), Points = team_points)
@@ -156,17 +159,26 @@ for (i in 1:nrow(team_stats)) {
 }
 
 # Create a heatmap of the home vs away average points
-library(reshape2)
-
 # Reshape data for ggplot
 home_away_points_melted <- melt(home_away_points)
 
-# Plot the heatmap
+# Annotated heatmap with average points displayed on tiles
 ggplot(home_away_points_melted, aes(Var1, Var2, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient(low = "white", high = "blue") +
-  labs(title = "Home vs Away Average Points", x = "Home Team", y = "Away Team") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  geom_tile(color = "white") +
+  geom_text(aes(label = round(value, 1)), color = "black", size = 3) +  # Add annotations
+  scale_fill_gradient(low = "lightblue", high = "darkblue", name = "Avg Points") +
+  labs(
+    title = "Home vs Away Average Points",
+    x = "Home Team",
+    y = "Away Team"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Angled for readability
+    axis.text.y = element_text(hjust = 1),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
 
 
 
