@@ -11,7 +11,7 @@ This R script performs a Monte Carlo simulation to study the behaviour of a temp
 ## Model Description 📄
 The model we have developed is a Monte Carlo simulation that predicts the final points for each Premier League team in the 2024-2025 season. The simulation is based on the idea that the outcome of each match (win, loss, or draw) is determined by the attacking and defensive strengths of the two competing teams, combined with randomness through a Poisson distribution to model the number of goals scored.
 
-### Breakdown of the model:
+### Breakdown of the model 🧩
 Team Strength Calculation: We utilize each team's Attacking Strength and Defensive Strength as key parameters. These are derived from historical data and performance statistics of teams in the current season (e.g., goals scored and conceded). These strengths help estimate the expected number of goals each team will score in a match.
 
 Poisson Distribution: The expected goals for both the home and away teams are calculated by multiplying the home team's attacking strength by the away team's defensive strength, and vice versa for the away team's attacking and the home team's defensive strength. These expected goals (xG and xGA) are used as the rate parameters in the Poisson distribution, which simulates the actual number of goals scored in a match.
@@ -20,7 +20,7 @@ Simulating Matches: For each match-up, the model runs multiple simulations (10,0
 
 Aggregate Results: After all simulations, the average points across simulations are calculated for each team, representing their projected performance over the course of the season.
 
-### Why We Chose This Model
+### Why We Chose This Model 🤔
 We initially considered using historical data, including factors like the number of shots, expected goals (xG), and key passes, which could give us a detailed understanding of team performance. However, the decision to focus on attacking and defensive strength was driven by the following factors:
 
 Simplicity and Robustness: The attacking and defensive strengths are derived from the team's performance statistics in the current season, which already provide a good representation of how teams have been performing so far. This approach captures the key aspects of team strength (attacking and defensive capabilities) while avoiding the complexity of handling too many variables.
