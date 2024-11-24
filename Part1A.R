@@ -41,3 +41,16 @@ for (t_increment in increments) {
        ylab = "Frequency of Proportion P",
        col = "#1d0fdf", border = "#000000")
 }
+
+#Describing the p distribution
+
+stats <- list()
+for(i in increments){
+  stat<- as.list(summary(results[[as.character(i)]]))
+  stat$variance <- var(results[[as.character(i)]])
+  stat$stdDev <- sd(results[[as.character(i)]])
+  stats[[as.character(i)]] <-  stat
+}
+results_table <- as.data.frame(lapply(stats, unlist))
+
+
