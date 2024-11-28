@@ -43,7 +43,6 @@ for (t_increment in increments) {
 }
 
 #Describing the p distribution
-
 stats <- list()
 for(i in increments){
   stat<- as.list(summary(results[[as.character(i)]]))
@@ -51,6 +50,8 @@ for(i in increments){
   stat$stdDev <- sd(results[[as.character(i)]])
   stats[[as.character(i)]] <-  stat
 }
-results_table <- as.data.frame(lapply(stats, unlist))
+stats_vector <- lapply(stats,unlist)
+results_table <- as.data.frame(stats_vector)
+
 
 
