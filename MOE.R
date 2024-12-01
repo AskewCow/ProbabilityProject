@@ -5,6 +5,12 @@
 # install.packages("reshape2")
 
 # while (dev.cur() > 1) dev.off() (resets all the plots)
+# Load necessary libraries
+library(readxl)
+library(ggplot2)
+library(knitr)
+library(reshape2)
+
 
 # Import the dataset
 team_stats <- read_excel("team_stats.xls")
@@ -76,44 +82,44 @@ simulate_league <- function(numSimuls) {
 }
 #--------------------------------------------------------------------------------------
 
-#Create a list containing all the team names
-t_list <- list()
-for(name in team_stats$Squad){
-  t_list[[name]] <- numeric()
-}
-empty_list <- t_list
 
-#Run simulation 30 times, where matches are simulated 100 times
-for(i in 1:30){
-  team_points <- simulate_league(100)
-  for(name in team_stats$Squad)
-  {
-    t_list[[name]] <- c( t_list[[name]],team_points[name])
+
+run_simuls <- function (trials,matches)
+{
+  #Create a list containing all the team names
+  t_list <- list()
+  for(name in team_stats$Squad){
+    t_list[[name]] <- numeric()
   }
-}
-result_1 <- data.frame( avg_points = sapply(t_list,mean), 
-                        std_dev =  sapply(t_list,sd))
-
-result_1$MOE <- 1.96*result_1$std_dev/sqrt(30)
-
-result_1 <- result_1[order(result_1$avg_points, decreasing = TRUE), ]
-message("Simulation Completed Successfully (100 Matches)!")
-
-
-#Run simulation 30 times, where matches are simulated 50 times
-t_list <- empty_list
-
-for(i in 1:30){
-  team_points <- simulate_league(50)
-  for(name in team_stats$Squad)
-  {
-    t_list[[name]] <- c( t_list[[name]],team_points[name])
+  empty_list <- t_list
+  message("Running simulation..")
+  
+  #Run simulation {trial} times, where matches are simulated {matches} times
+  for(i in 1:trials){
+    team_points <- simulate_league(matches)
+    for(name in team_stats$Squad)
+    {
+      t_list[[name]] <- c( t_list[[name]],team_points[name])
+    }
   }
-}
-result_2 <- data.frame( avg_points = sapply(t_list,mean), 
+  result <- data.frame( avg_points = sapply(t_list,mean), 
                         std_dev =  sapply(t_list,sd))
-result_2$MOE <- 1.96*result_2$std_dev/sqrt(30)
-result_2 <- result_2[order(result_1$avg_points, decreasing = TRUE), ]
-message("Simulation Completed Successfully (50 Matches)!")
-# - - - - - - - - - - -
+  result$MOE <- 1.96*result$std_dev/sqrt(trials)
+  result <- result[order(result$avg_points, decreasing = TRUE), ]
+  message("Simulation Completed Successfully")
+  return (result)
+}
+
+test1 <- run_simuls(30,100)
+test2 <- run_simuls(30,20)
+test3 <- run_simuls(30,1)
+
+
+
+#Write results to CSV if desired
+
+#write.csv(test1, "test_100.csv", row.names = TRUE)
+#write.csv(test2, "test_20.csv", row.names = TRUE)
+#write.csv(test3, "test_1.csv", row.names = TRUE)
+
 
