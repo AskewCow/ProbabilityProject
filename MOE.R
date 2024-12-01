@@ -111,15 +111,29 @@ run_simuls <- function (trials,matches)
 }
 
 test1 <- run_simuls(30,100)
-test2 <- run_simuls(30,20)
-test3 <- run_simuls(30,1)
+moe_1 <- mean(test1$MOE)
+
+test2 <- run_simuls(30,50)
+moe_2 <- mean(test2$MOE)
+
+test3 <- run_simuls(30,20)
+moe_3 <- mean(test3$MOE)
+
+test4 <- run_simuls(30,1)
+moe_4 <- mean(test4$MOE)
+
+
+
+bar <- barplot(c(moe_1,moe_2,moe_3,moe_4),
+          names = c(moe_1,moe_2,moe_3,moe_4),xlab="Matches",ylab="Margin of Error",col="blue",)
+        
 
 
 
 #Write results to CSV if desired
 
 #write.csv(test1, "test_100.csv", row.names = TRUE)
-#write.csv(test2, "test_20.csv", row.names = TRUE)
-#write.csv(test3, "test_1.csv", row.names = TRUE)
+#write.csv(test3, "test_20.csv", row.names = TRUE)
+#write.csv(test4, "test_1.csv", row.names = TRUE)
 
 
